@@ -1,6 +1,6 @@
 package com.example.quadtreegraphical;
 
-import javafx.geometry.Point2D;
+
 import javafx.geometry.Rectangle2D;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.paint.Color;
@@ -14,7 +14,7 @@ public class Quadtree {
         Rectangle2D boundary;
         boolean divided = false;
         int capacity; // capacity
-        ArrayList<Point2D> points;
+        ArrayList<PointParticle> points;
         Quadtree quadtreenw;
         Quadtree quadtreene;
         Quadtree quadtreesw;
@@ -26,7 +26,7 @@ public class Quadtree {
             this.points = new ArrayList<>();
         }
 
-        public void insert(Point2D point) {
+        public void insert(PointParticle point) {
 
 //            System.out.println(this.boundary);
             if (  this.boundary.contains(point)){
@@ -74,12 +74,12 @@ public class Quadtree {
 
         }
 
-        public List<Point2D> query(Rectangle2D queryRectangle2D){
-            List<Point2D> results = new ArrayList<Point2D>();
+        public List<PointParticle> query(Rectangle2D queryRectangle2D){
+            List<PointParticle> results = new ArrayList<PointParticle>();
             if(!this.boundary.intersects(queryRectangle2D)){
             }
             else{
-                for (Point2D point2D : points) {
+                for (PointParticle point2D : points) {
                     if(queryRectangle2D.contains(point2D)){
                         results.add(point2D);
                     }
@@ -92,18 +92,47 @@ public class Quadtree {
                     results.addAll(this.quadtreese.query(queryRectangle2D));
                 }
             }
-
             return results;
-
-
         }
+
+        public boolean intersects(Circle circle){
+//            def intersect(Circle(P, R), Rectangle(A, B, C, D)):
+//            S = Circle(P, R)
+//            return (this.boundary.contains(circle.getCenterX(), circle.getCenterY()) or
+//            intersectCircle(S, (A, B)) or
+//            intersectCircle(S, (B, C)) or
+//            intersectCircle(S, (C, D)) or
+//            intersectCircle(S, (D, A)))
+            return this.boundary.contains(circle.getCenterX(), circle.getCenterY());
+        }
+
+    public List<PointParticle> query(Circle circle){
+        List<PointParticle> results = new ArrayList<PointParticle>();
+        if(!this.intersects(circle)){
+        }
+        else{
+            for (PointParticle point2D : points) {
+                if(circle.contains(point2D)){
+                    results.add(point2D);
+                }
+            }
+
+            if(this.divided){
+                results.addAll(this.quadtreenw.query(circle));
+                results.addAll(this.quadtreene.query(circle));
+                results.addAll(this.quadtreesw.query(circle));
+                results.addAll(this.quadtreese.query(circle));
+            }
+        }
+        return results;
+    }
 
         public void show(AnchorPane root) {
             Rectangle rectangle = new Rectangle(this.boundary.getMinX(), this.boundary.getMinY(), this.boundary.getWidth(), this.boundary.getHeight());
             rectangle.setStroke(Color.RED);
             rectangle.setFill(Color.TRANSPARENT);
             root.getChildren().add(rectangle);
-            for(Point2D point2D: points){
+            for(PointParticle point2D: points){
                 Circle circle = new Circle();
                 circle.setCenterX(point2D.getX());
                 circle.setCenterY(point2D.getY());

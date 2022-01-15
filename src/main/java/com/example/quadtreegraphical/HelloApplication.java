@@ -41,11 +41,10 @@ public class HelloApplication extends Application {
 
 
 
-        Quadtree quadtree = new Quadtree(new Rectangle2D(0,0,800,800), 4);
 
 
         List<Particle> particles = new ArrayList<>();
-        for (int i = 0; i < 500; i++) {
+        for (int i = 0; i < 5000; i++) {
             Particle particle = new Particle(randomBetween(100, 600 ), randomBetween(100, 600), scene.getWidth(), scene.getHeight(), Color.AQUA);
             particles.add(particle);
 
@@ -70,16 +69,26 @@ public class HelloApplication extends Application {
                     System.out.println(String.format("Current frame rate: %.3f", frameRate));
                 }
 
+
+                Quadtree quadtree = new Quadtree(new Rectangle2D(0,0,800,800), 4);
                 for (Particle particle :
                         particles) {
                     particle.move();
                     particle.setHightlight(false);
+                    quadtree.insert(new PointParticle(particle.getCenterX(), particle.getCenterY(), particle));
 
                 }
 
                 for (Particle particle :
                         particles) {
-                    for(Particle other : particles){
+                    List<PointParticle> otherParticlesWithinTheRange = quadtree.query(new Circle(particle.getCenterX(), particle.getCenterY(), particle.getRadius()*2));
+//                    for(Particle other : particles){
+//                        if(!other.equals(particle) && particle.intersects(other.getBoundsInParent())){
+//                            particle.setHightlight(true);
+//                        }
+//                    }
+                    for(PointParticle point : otherParticlesWithinTheRange){
+                        Particle other = point.getParticle();
                         if(!other.equals(particle) && particle.intersects(other.getBoundsInParent())){
                             particle.setHightlight(true);
                         }
