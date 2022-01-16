@@ -1,19 +1,18 @@
 package com.example.quadtreegraphical;
 
-import javafx.scene.layout.AnchorPane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 
-import javax.security.auth.login.LoginContext;
 import java.util.concurrent.ThreadLocalRandom;
 
 public class Particle extends Circle{
 
     double container_width;
     double container_height;
+    private double mass;
+    private double velocity_x;
+    private double velocity_y;
 
-    // distance (in pixels) traveled per unit of time
-    private static final int dist = 10;
 
     public void setHightlight(boolean hightlight) {
         this.hightlight = hightlight;
@@ -29,7 +28,23 @@ public class Particle extends Circle{
         this.container_width = container_width;
         this.container_height = container_height;
         this.setStrokeWidth(100);
+    }
 
+    public Particle(double x, double y, double container_width, double container_height, double radius, double mass, Color color) {
+        super(x,y,radius, color); // radius = 3
+        this.hightlight = false;
+        this.container_width = container_width;
+        this.container_height = container_height;
+        this.mass = mass;
+        this.setVelocity(0,0);
+        this.setTranslateX(x);
+        this.setTranslateY(y);
+        this.setStrokeWidth(100);
+    }
+
+    public void setVelocity(double x, double y){
+        this.setVelocityX(x);
+        this.setVelocityY(y);
     }
 
     public void move(){
@@ -47,16 +62,6 @@ public class Particle extends Circle{
         if (y <= r || y >= container_height - r) {
             dy = -dy;
         }
-
-        // new location of particle
-//        double newX = x + dx;
-//        double newY = y + dy;
-
-        // Make sure that new location is within the container.
-//        newX = Math.max(newX, r);
-//        newX = Math.min(newX, container_width - r);
-//        newY = Math.max(newY, r);
-//        newY = Math.min(newY, container_height - r);
 
 
         double newX = this.getCenterX()  ;
@@ -108,13 +113,38 @@ public class Particle extends Circle{
         this.setCenterX(newX); ;
         this.setCenterY(newY);
 
-        if(this.hightlight){
-            this.setFill(Color.RED);
-        }
-        else{
-            this.setFill(Color.AQUA);
-        }
+//        if(this.hightlight){
+//            this.setFill(Color.RED);
+//        }
+//        else{
+//            this.setFill(Color.AQUA);
+//        }
 
+
+
+    }
+
+    public double getVelocityX() {
+        return velocity_x;
+    }
+
+    public void setVelocityX(double velocity_x) {
+        this.velocity_x = velocity_x;
+    }
+
+    public double getVelocityY() {
+        return velocity_y;
+    }
+
+    public void setVelocityY(double velocity_y) {
+        this.velocity_y = velocity_y;
+    }
+    public double getMass() {
+        return mass;
+    }
+
+    public void setMass(double mass) {
+        this.mass = mass;
     }
 
 

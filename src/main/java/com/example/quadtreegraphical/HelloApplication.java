@@ -32,17 +32,39 @@ public class HelloApplication extends Application {
     private int frameTimeIndex = 0 ;
     private boolean arrayFilled = false ;
 
+
+    List<Color> colors = new ArrayList<>() {{
+        add(Color.RED);
+        add(Color.BLUE);
+        add(Color.YELLOW);
+        add(Color.ORANGE);
+        add(Color.PURPLE);
+        add(Color.AQUA);
+
+    }
+    };
+
     @Override
     public void start(Stage stage) throws IOException {
 
         AnchorPane root = new AnchorPane();
-        Scene scene = new Scene(root, 800, 800);
+        Scene scene = new Scene(root, 800, 800, Color.BLACK);
         stage.setScene(scene);
 
 
         List<Particle> particles = new ArrayList<>();
-        for (int i = 0; i < 500; i++) {
-            Particle particle = new Particle(randomBetween(100, 600 ), randomBetween(100, 600), scene.getWidth(), scene.getHeight(), Color.AQUA);
+        for (int i = 0; i < 5; i++) {
+
+            double radius = randomBetween(3, 20);
+
+            Particle particle = new Particle(
+                    randomBetween(100, 600 ),
+                    randomBetween(100, 600),
+                    scene.getWidth(),
+                    scene.getHeight(),
+                    radius,
+                    radius*50,
+                    Utils.randomFromList(colors));
             particles.add(particle);
 
             root.getChildren().add(particle);
@@ -66,21 +88,28 @@ public class HelloApplication extends Application {
                     System.out.println(String.format("Current frame rate: %.3f", frameRate));
                 }
 
-                for (Particle particle :
-                        particles) {
-                    particle.move();
-                    particle.setHightlight(false);
+                CalcDeltas(particles);
+                for(Particle b : particles) {
+                    b.setTranslateX(b.getTranslateX()+b.getVelocityX());
+                    b.setTranslateY(b.getTranslateY() + b.getVelocityY());
 
                 }
 
-                for (Particle particle :
-                        particles) {
-                    for(Particle other : particles){
-                        if(!other.equals(particle) && particle.intersects(other.getBoundsInParent())){
-                            particle.setHightlight(true);
-                        }
-                    }
-                }
+//                for (Particle particle :
+//                        particles) {
+//                    particle.move();
+//                    particle.setHightlight(false);
+//
+//                }
+
+//                for (Particle particle :
+//                        particles) {
+//                    for(Particle other : particles){
+//                        if(!other.equals(particle) && particle.intersects(other.getBoundsInParent())){
+//                            particle.setHightlight(true);
+//                        }
+//                    }
+//                }
 
             }
             }.start();
@@ -94,6 +123,34 @@ public class HelloApplication extends Application {
 
     public static void main(String[] args) {
         launch();
+    }
+
+    public static void CalcDeltas(List<Particle> bodies) {
+        for(Particle a : bodies) {
+            for(Particle b : bodies) {
+                if(a.equals(b)) {
+                    continue;
+                }
+                double[] delta = getG(a, b);
+
+                if(a.getTranslateX()>b.getTranslateX())
+                    delta[0] *= -1;
+
+                if(a.getTranslateY()>b.getTranslateY())
+                    delta[1] *= -1;
+
+                a.setVelocity(a.getVelocityX()+delta[0], a.getVelocityY()+delta[1]);
+            }
+        }
+    }
+
+    public static double[] getG(Particle a, Particle b) {
+        double diffX = Math.abs(a.getTranslateX()-b.getTranslateX()); // valeur absolue deplacement x
+        double diffY = Math.abs(a.getTranslateY()-b.getTranslateY()); // valeur absolue deplacement x y
+        double radius = Math.sqrt(Math.pow(diffX, 2)+Math.pow(diffY, 2)); //distance
+        double f = (0.000002 * a.getMass() * b.getMass()) / (Math.pow(radius, 2)); // acceleration masse/distance
+        return new double[] {diffX*f, diffY*f};
+
     }
 
 }
