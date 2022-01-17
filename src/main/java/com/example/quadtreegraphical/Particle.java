@@ -1,5 +1,6 @@
 package com.example.quadtreegraphical;
 
+import javafx.geometry.Point2D;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 
@@ -12,6 +13,7 @@ public class Particle extends Circle{
     private double mass;
     private double velocity_x;
     private double velocity_y;
+    double fx, fy;
 
 
     public void setHightlight(boolean hightlight) {
@@ -148,5 +150,59 @@ public class Particle extends Circle{
     }
 
 
+    public void addForce(Particle b) {
 
+        Particle a = this;
+//        double dx = b.getTranslateX() - a.getTranslateX();
+//        double dy = b.getTranslateY() - a.getCenterY();
+//        double dist = Math.sqrt(dx*dx + dy*dy);
+
+//        double diffX = Math.abs(a.getTranslateX()-b.getTranslateX()); // valeur absolue deplacement x
+//        double diffY = Math.abs(a.getTranslateY()-b.getTranslateY()); // valeur absolue deplacement x y
+
+        double diffX =  a.getTranslateX()-b.getTranslateX() ; // valeur absolue deplacement x
+        double diffY =  a.getTranslateY()-b.getTranslateY() ; // valeur absolue deplacement x y
+        double distance = Math.sqrt(Math.pow(diffX, 2)+Math.pow(diffY, 2)); //distance
+        double F = (0.000002 * a.getMass() * b.getMass()) / (Math.pow(distance, 2)); // force masse/distance
+
+
+        a.fx += F * diffX / distance;
+        a.fy += F * diffY / distance;
+//        a.fx += F * dx / dist;
+//        a.fy += F * dy / dist;
+    }
+
+    public void addForce(Point2D p, double mass) {
+
+        Particle a = this;
+//        double diffX = p.getX() - a.getTranslateX();
+//        double diffY = p.getY() - a.getCenterY();
+//        double distance = Math.sqrt(dx*dx + dy*dy);
+
+//        double diffX = Math.abs(a.getTranslateX()-p.getX()); // valeur absolue deplacement x
+//        double diffY = Math.abs(a.getTranslateY()-p.getY()); // valeur absolue deplacement x y
+        double diffX =  a.getTranslateX()-p.getX() ; // valeur absolue deplacement x
+        double diffY =  a.getTranslateY()-p.getY() ; // valeur absolue deplacement x y
+        double distance = Math.sqrt(Math.pow(diffX, 2)+Math.pow(diffY, 2)); //distance
+//        double F = (0.000002 * a.getMass() * b.getMass()) / (Math.pow(distance, 2)); // force masse/distance
+
+
+        double F = (0.000002 * a.mass * mass) / (distance*distance  );
+        a.fx += F * diffX / distance;
+        a.fy += F * diffY / distance;
+//        a.fx += F * dx / dist;
+//        a.fy += F * dy / dist;
+    }
+
+    public void update() {
+
+        setVelocity(
+                getVelocityX() + (  fx / mass),
+                getVelocityY() + (  fy / mass)
+                );
+
+        setTranslateX(getTranslateX() +  getVelocityX());
+        setTranslateY(getTranslateY() +  getVelocityY());
+
+    }
 }

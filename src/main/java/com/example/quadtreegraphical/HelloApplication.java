@@ -88,12 +88,22 @@ public class HelloApplication extends Application {
                     System.out.println(String.format("Current frame rate: %.3f", frameRate));
                 }
 
-                CalcDeltas(particles);
-                for(Particle b : particles) {
-                    b.setTranslateX(b.getTranslateX()+b.getVelocityX());
-                    b.setTranslateY(b.getTranslateY() + b.getVelocityY());
+                Quadtree quadtree = new Quadtree(new Rectangle2D(0,0,800,800), 1);
 
+                for (Particle particle : particles) {
+                    quadtree.insert(new PointParticle(particle.getCenterX(), particle.getCenterY(), particle));
                 }
+
+                for (Particle particle : particles) {
+                    quadtree.updateForce(new PointParticle(particle.getCenterX(), particle.getCenterY(), particle));
+                    particle.update();
+                }
+//                CalcDeltas(particles);
+//                for(Particle b : particles) {
+//                    b.setTranslateX(b.getTranslateX()+b.getVelocityX());
+//                    b.setTranslateY(b.getTranslateY() + b.getVelocityY());
+//
+//                }
 
 //                for (Particle particle :
 //                        particles) {
@@ -148,7 +158,7 @@ public class HelloApplication extends Application {
         double diffX = Math.abs(a.getTranslateX()-b.getTranslateX()); // valeur absolue deplacement x
         double diffY = Math.abs(a.getTranslateY()-b.getTranslateY()); // valeur absolue deplacement x y
         double radius = Math.sqrt(Math.pow(diffX, 2)+Math.pow(diffY, 2)); //distance
-        double f = (0.000002 * a.getMass() * b.getMass()) / (Math.pow(radius, 2)); // acceleration masse/distance
+        double f = (0.000002 * a.getMass() * b.getMass()) / (Math.pow(radius, 2)); // force masse/distance
         return new double[] {diffX*f, diffY*f};
 
     }
