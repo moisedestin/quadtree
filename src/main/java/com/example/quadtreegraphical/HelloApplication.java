@@ -48,14 +48,14 @@ public class HelloApplication extends Application {
     public void start(Stage stage) throws IOException {
 
         AnchorPane root = new AnchorPane();
-        Scene scene = new Scene(root, 800, 800, Color.BLACK);
+        Scene scene = new Scene(root, 1200, 800, Color.BLACK);
         stage.setScene(scene);
 
 
         List<Particle> particles = new ArrayList<>();
-        for (int i = 0; i < 1000; i++) {
+        for (int i = 0; i < 5000; i++) {
 
-            double radius = randomBetween(3, 20);
+            double radius = randomBetween(3, 6);
 
             Particle particle = new Particle(
                     randomBetween(100, 600 ),
@@ -88,7 +88,7 @@ public class HelloApplication extends Application {
                     System.out.println(String.format("Current frame rate: %.3f", frameRate));
                 }
 
-                Quadtree quadtree = new Quadtree(new Rectangle2D(0,0,800,800), 1);
+                Quadtree quadtree = new Quadtree(new Rectangle2D(0,0,1200,800), 1);
 
                 for (Particle particle : particles) {
                     quadtree.insert(new PointParticle(particle.getCenterX(), particle.getCenterY(), particle));
@@ -96,6 +96,8 @@ public class HelloApplication extends Application {
 
                 for (Particle particle : particles) {
                     quadtree.updateForce(new PointParticle(particle.getCenterX(), particle.getCenterY(), particle));
+
+                    //set new position
                     particle.update();
                 }
 //                CalcDeltas(particles);
@@ -157,8 +159,8 @@ public class HelloApplication extends Application {
     public static double[] getG(Particle a, Particle b) {
         double diffX = Math.abs(a.getTranslateX()-b.getTranslateX()); // valeur absolue deplacement x
         double diffY = Math.abs(a.getTranslateY()-b.getTranslateY()); // valeur absolue deplacement x y
-        double radius = Math.sqrt(Math.pow(diffX, 2)+Math.pow(diffY, 2)); //distance
-        double f = (0.000002 * a.getMass() * b.getMass()) / (Math.pow(radius, 2)); // force masse/distance
+        double distance = Math.sqrt(Math.pow(diffX, 2)+Math.pow(diffY, 2)); //distance
+        double f = (0.000002 * a.getMass() * b.getMass()) / (Math.pow(distance, 2)); // force masse/distance
         return new double[] {diffX*f, diffY*f};
 
     }

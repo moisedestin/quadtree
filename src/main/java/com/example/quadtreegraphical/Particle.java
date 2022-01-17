@@ -152,7 +152,6 @@ public class Particle extends Circle{
 
     public void addForce(Particle b) {
 
-        Particle a = this;
 //        double dx = b.getTranslateX() - a.getTranslateX();
 //        double dy = b.getTranslateY() - a.getCenterY();
 //        double dist = Math.sqrt(dx*dx + dy*dy);
@@ -160,36 +159,35 @@ public class Particle extends Circle{
 //        double diffX = Math.abs(a.getTranslateX()-b.getTranslateX()); // valeur absolue deplacement x
 //        double diffY = Math.abs(a.getTranslateY()-b.getTranslateY()); // valeur absolue deplacement x y
 
-        double diffX =  a.getTranslateX()-b.getTranslateX() ; // valeur absolue deplacement x
-        double diffY =  a.getTranslateY()-b.getTranslateY() ; // valeur absolue deplacement x y
+        double diffX =  this.getTranslateX()-b.getTranslateX() ; // valeur absolue deplacement x
+        double diffY =  this.getTranslateY()-b.getTranslateY() ; // valeur absolue deplacement x y
         double distance = Math.sqrt(Math.pow(diffX, 2)+Math.pow(diffY, 2)); //distance
-        double F = (0.000002 * a.getMass() * b.getMass()) / (Math.pow(distance, 2)); // force masse/distance
+        double F = (0.000002 * this.getMass() * b.getMass()) / (Math.pow(distance, 2)); // force masse/distance
 
 
-        a.fx += F * diffX / distance;
-        a.fy += F * diffY / distance;
+        this.fx += F * diffX / distance;
+        this.fy += F * diffY / distance;
 //        a.fx += F * dx / dist;
 //        a.fy += F * dy / dist;
     }
 
     public void addForce(Point2D p, double mass) {
 
-        Particle a = this;
-//        double diffX = p.getX() - a.getTranslateX();
+ //        double diffX = p.getX() - a.getTranslateX();
 //        double diffY = p.getY() - a.getCenterY();
 //        double distance = Math.sqrt(dx*dx + dy*dy);
 
 //        double diffX = Math.abs(a.getTranslateX()-p.getX()); // valeur absolue deplacement x
 //        double diffY = Math.abs(a.getTranslateY()-p.getY()); // valeur absolue deplacement x y
-        double diffX =  a.getTranslateX()-p.getX() ; // valeur absolue deplacement x
-        double diffY =  a.getTranslateY()-p.getY() ; // valeur absolue deplacement x y
+        double diffX =  this.getTranslateX()-p.getX() ; // valeur absolue deplacement x
+        double diffY =  this.getTranslateY()-p.getY() ; // valeur absolue deplacement x y
         double distance = Math.sqrt(Math.pow(diffX, 2)+Math.pow(diffY, 2)); //distance
 //        double F = (0.000002 * a.getMass() * b.getMass()) / (Math.pow(distance, 2)); // force masse/distance
 
 
-        double F = (0.000002 * a.mass * mass) / (distance*distance  );
-        a.fx += F * diffX / distance;
-        a.fy += F * diffY / distance;
+        double F = (0.000002 * this.mass * mass) / (distance*distance  );
+        this.fx += F * diffX / distance;
+        this.fy += F * diffY / distance;
 //        a.fx += F * dx / dist;
 //        a.fy += F * dy / dist;
     }
