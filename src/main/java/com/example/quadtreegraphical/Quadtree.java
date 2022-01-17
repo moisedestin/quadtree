@@ -20,25 +20,36 @@ public class Quadtree {
         Quadtree quadtreesw;
         Quadtree quadtreese;
 
-        Quadtree(Rectangle2D boundary, int n) {
+        Quadtree(Rectangle2D boundary, int n ) {
             this.boundary = boundary;
             this.capacity = n;
             this.points = new ArrayList<>();
+//            this.divided = divided;
         }
 
         public void insert(Point2D point) {
 
-//            System.out.println(this.boundary);
+
             if (  this.boundary.contains(point)){
                 if (this.points.size() < this.capacity) {
                     this.points.add(point);
-
                 } else {
 
                     if (!divided) {
-
                         this.subdivide();
+
+                        for (Point2D existingpoint :
+                                points) {
+                            if(!point.equals(existingpoint)){
+                                this.quadtreese.insert(existingpoint);
+                                this.quadtreenw.insert(existingpoint);
+                                this.quadtreesw.insert(existingpoint);
+                                this.quadtreene.insert(existingpoint);
+                            }
+
+                        }
                     }
+
 
                     this.quadtreese.insert(point);
                     this.quadtreenw.insert(point);
@@ -63,13 +74,7 @@ public class Quadtree {
             this.quadtreene = new Quadtree(new Rectangle2D(x + (w / 2), y, w / 2, h / 2), this.capacity);
             this.quadtreesw = new Quadtree(new Rectangle2D(x, y + (h / 2), w / 2, h / 2), this.capacity);
             this.quadtreese = new Quadtree(new Rectangle2D(x + (w / 2), y + (h / 2), w / 2, h / 2), this.capacity);
-
-
-
-//            this.quadtreenw = new Quadtree(new Rectangle2D(x - (w / 2), y - (y / 2), w / 2, h / 2), this.capacity); // if we took coordinstr as  100 100 it would be inacurate, draw it
-//            this.quadtreene = new Quadtree(new Rectangle2D(x + (w / 2), y - (y / 2), w / 2, h / 2), this.capacity);
-//            this.quadtreesw = new Quadtree(new Rectangle2D(x - (w / 2), y + (y / 2), w / 2, h / 2), this.capacity);
-//            this.quadtreese = new Quadtree(new Rectangle2D(x + (w / 2), y + (y / 2), w / 2, h / 2), this.capacity);
+ 
             this.divided = true;
 
         }
@@ -123,4 +128,17 @@ public class Quadtree {
             }
         }
 
+    @Override
+    public String toString() {
+        return "Quadtree{" +
+                "boundary=" + boundary +
+                ", divided=" + divided +
+                ", capacity=" + capacity +
+                ", points=" + points +
+                ", quadtreenw=" + quadtreenw +
+                ", quadtreene=" + quadtreene +
+                ", quadtreesw=" + quadtreesw +
+                ", quadtreese=" + quadtreese +
+                '}';
+    }
 }

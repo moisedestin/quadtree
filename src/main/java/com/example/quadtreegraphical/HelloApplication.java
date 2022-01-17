@@ -44,7 +44,7 @@ public class HelloApplication extends Application {
 
 
         Rectangle2D boundary = new Rectangle2D(100, 100, 600, 600); // with and height are distances from the center( (x,y) which is at (200,200) position, so that's perfectly in the middle) to the edge
-        Quadtree quadtree = new Quadtree(boundary, 4);
+        Quadtree quadtree = new Quadtree(boundary, 1);
 
 //        for (int i = 0; i < 1000; i++) {
 //            // the point should be minimum the position of the with and maximum the with * 2
