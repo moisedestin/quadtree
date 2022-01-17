@@ -1,6 +1,7 @@
 package com.example.quadtreegraphical;
 
 
+import javafx.geometry.Point2D;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.paint.Color;
@@ -38,6 +39,16 @@ public class Quadtree {
                     if (!divided) {
 
                         this.subdivide();
+                        for (PointParticle existingpoint :
+                                points) {
+                            if(!point.equals(existingpoint)){
+                                this.quadtreese.insert(existingpoint);
+                                this.quadtreenw.insert(existingpoint);
+                                this.quadtreesw.insert(existingpoint);
+                                this.quadtreene.insert(existingpoint);
+                            }
+
+                        }
                     }
 
                     this.quadtreese.insert(point);
