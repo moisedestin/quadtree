@@ -53,7 +53,7 @@ public class HelloApplication extends Application {
 
 
         List<Particle> particles = new ArrayList<>();
-        for (int i = 0; i < 5; i++) {
+        for (int i = 0; i < 1000; i++) {
 
             double radius = randomBetween(3, 20);
 
