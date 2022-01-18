@@ -53,7 +53,7 @@ public class HelloApplication extends Application {
 
 
         List<Particle> particles = new ArrayList<>();
-        for (int i = 0; i < 5; i++) {
+        for (int i = 0; i < 5000; i++) {
 
             double radius = randomBetween(3, 20);
 
@@ -88,28 +88,33 @@ public class HelloApplication extends Application {
                     System.out.println(String.format("Current frame rate: %.3f", frameRate));
                 }
 
-                CalcDeltas(particles);
+
+                for(Particle a : particles) {
+                    for(Particle b : particles) {
+                        if(a.equals(b)) {
+                            continue;
+                        }
+                        double[] delta = getG(a, b);
+
+                        if(a.getTranslateX()>b.getTranslateX())
+                            delta[0] *= -1;
+
+                        if(a.getTranslateY()>b.getTranslateY())
+                            delta[1] *= -1;
+
+                        a.setVelocity(a.getVelocityX()+delta[0], a.getVelocityY()+delta[1]);
+                    }
+                }
+
+
+
                 for(Particle b : particles) {
                     b.setTranslateX(b.getTranslateX()+b.getVelocityX());
                     b.setTranslateY(b.getTranslateY() + b.getVelocityY());
 
                 }
 
-//                for (Particle particle :
-//                        particles) {
-//                    particle.move();
-//                    particle.setHightlight(false);
-//
-//                }
 
-//                for (Particle particle :
-//                        particles) {
-//                    for(Particle other : particles){
-//                        if(!other.equals(particle) && particle.intersects(other.getBoundsInParent())){
-//                            particle.setHightlight(true);
-//                        }
-//                    }
-//                }
 
             }
             }.start();
@@ -125,24 +130,7 @@ public class HelloApplication extends Application {
         launch();
     }
 
-    public static void CalcDeltas(List<Particle> bodies) {
-        for(Particle a : bodies) {
-            for(Particle b : bodies) {
-                if(a.equals(b)) {
-                    continue;
-                }
-                double[] delta = getG(a, b);
 
-                if(a.getTranslateX()>b.getTranslateX())
-                    delta[0] *= -1;
-
-                if(a.getTranslateY()>b.getTranslateY())
-                    delta[1] *= -1;
-
-                a.setVelocity(a.getVelocityX()+delta[0], a.getVelocityY()+delta[1]);
-            }
-        }
-    }
 
     public static double[] getG(Particle a, Particle b) {
         double diffX = Math.abs(a.getTranslateX()-b.getTranslateX()); // valeur absolue deplacement x
