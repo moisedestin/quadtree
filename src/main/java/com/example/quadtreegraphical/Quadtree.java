@@ -24,7 +24,6 @@ public class Quadtree {
             this.boundary = boundary;
             this.capacity = n;
             this.points = new ArrayList<>();
-//            this.divided = divided;
         }
 
         public void insert(Point2D point) {
