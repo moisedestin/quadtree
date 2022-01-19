@@ -55,11 +55,11 @@ public class HelloApplication extends Application {
         List<Particle> particles = new ArrayList<>();
         for (int i = 0; i < 5000; i++) {
 
-            double radius = randomBetween(3, 20);
+            double radius = randomBetween(3, 6);
 
             Particle particle = new Particle(
-                    randomBetween(100, 600 ),
-                    randomBetween(100, 600),
+                    randomBetween(50, 750 ),
+                    randomBetween(50, 750),
                     scene.getWidth(),
                     scene.getHeight(),
                     radius,
@@ -93,8 +93,10 @@ public class HelloApplication extends Application {
                     for(Particle b : particles) {
                         if(!a.equals(b)) {
                             a.setVelocity(
-                                    a.getVelocityX()+(a.getDiffXFromParticle(b)*a.getForce(b)),
-                                    a.getVelocityY()+(a.getDiffYFromParticle(b)*a.getForce(b)));
+                                    a.getVelocityX()+a.getForceX(b),
+                                    a.getVelocityY()+a.getForceY(b));
+
+
                         }
 
 //                        if(a.getTranslateX()>b.getTranslateX())
@@ -103,7 +105,7 @@ public class HelloApplication extends Application {
 //                        if(a.getTranslateY()>b.getTranslateY())
 //                            delta[1] *= -1;
 
-//                        a.setVelocity(a.getVelocityX()+delta[0], a.getVelocityY()+delta[1]);
+//                        a.setVelocity(a.getVelocityX()+ ta[0], a.getVelocityY() ta[1]);
 
                     }
                 }
@@ -111,8 +113,8 @@ public class HelloApplication extends Application {
 
 
                 for(Particle b : particles) {
-                    b.setTranslateX(b.getTranslateX()+b.getVelocityX());
-                    b.setTranslateY(b.getTranslateY() + b.getVelocityY());
+                    b.setCenterX(b.getCenterX()+b.getVelocityX());
+                    b.setCenterY(b.getCenterY() + b.getVelocityY());
 
                 }
 
@@ -130,17 +132,6 @@ public class HelloApplication extends Application {
 
     public static void main(String[] args) {
         launch();
-    }
-
-
-
-    public static double[] getG(Particle a, Particle b) {
-        double diffX = Math.abs(a.getTranslateX()-b.getTranslateX()); // valeur absolue deplacement x
-        double diffY = Math.abs(a.getTranslateY()-b.getTranslateY()); // valeur absolue deplacement x y
-        double radius = Math.sqrt(Math.pow(diffX, 2)+Math.pow(diffY, 2)); //distance
-        double f = (0.000002 * a.getMass() * b.getMass()) / (Math.pow(radius, 2)); // acceleration masse/distance
-        return new double[] {diffX*f, diffY*f};
-
     }
 
 }
