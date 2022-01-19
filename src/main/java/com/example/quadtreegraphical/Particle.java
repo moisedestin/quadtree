@@ -110,15 +110,6 @@ public class Particle extends Circle{
         this.setCenterX(newX); ;
         this.setCenterY(newY);
 
-//        if(this.hightlight){
-//            this.setFill(Color.RED);
-//        }
-//        else{
-//            this.setFill(Color.AQUA);
-//        }
-
-
-
     }
 
     public double getVelocityX() {
@@ -147,12 +138,6 @@ public class Particle extends Circle{
 
     public void addForce(Particle b) {
 
-//        double dx = b.getTranslateX() - a.getTranslateX();
-//        double dy = b.getTranslateY() - a.getCenterY();
-//        double dist = Math.sqrt(dx*dx + dy*dy);
-
-//        double diffX = Math.abs(a.getTranslateX()-b.getTranslateX()); // valeur absolue deplacement x
-//        double diffY = Math.abs(a.getTranslateY()-b.getTranslateY()); // valeur absolue deplacement x y
 
         double diffX =  this.getDiffXFromParticle(b) ; // valeur absolue deplacement x
         double diffY =  this.getDiffYFromParticle(b) ; // valeur absolue deplacement x y
@@ -162,29 +147,17 @@ public class Particle extends Circle{
 
         this.fx += F * diffX / distance;
         this.fy += F * diffY / distance;
-//        a.fx += F * dx / dist;
-//        a.fy += F * dy / dist;
     }
 
     public void addForce(Point2D p, double mass) {
-
- //        double diffX = p.getX() - a.getTranslateX();
-//        double diffY = p.getY() - a.getCenterY();
-//        double distance = Math.sqrt(dx*dx + dy*dy);
-
-//        double diffX = Math.abs(a.getTranslateX()-p.getX()); // valeur absolue deplacement x
-//        double diffY = Math.abs(a.getTranslateY()-p.getY()); // valeur absolue deplacement x y
         double diffX =  this.getCenterX()-p.getX() ; // valeur absolue deplacement x
         double diffY =  this.getCenterY()-p.getY() ; // valeur absolue deplacement x y
         double distance = Math.sqrt(Math.pow(diffX, 2)+Math.pow(diffY, 2)); //distance
-//        double F = (0.000002 * a.getMass() * b.getMass()) / (Math.pow(distance, 2)); // force masse/distance
 
 
         double F = (0.000002 * this.mass * mass) / (distance*distance  );
         this.fx += F * diffX / distance;
         this.fy += F * diffY / distance;
-//        a.fx += F * dx / dist;
-//        a.fy += F * dy / dist;
     }
 
     public void update() {
@@ -196,18 +169,6 @@ public class Particle extends Circle{
                 getVelocityY() + (  this.getAccelerationY())
                 );
 
-//        double accelerationX = this.getVelocityX();
-//        double accelerationY = this.getVelocityY();
-
-//        if(getCenterX() >= this.container_width)
-//            accelerationX = -Math.abs(accelerationX);
-//        else{
-//            accelerationX = Math.abs(accelerationX);
-//        }
-//        if(getCenterY() >= this.container_height)
-//            accelerationY = -Math.abs(accelerationY);
-//        else
-//            accelerationY = Math.abs(accelerationY);
 
         setCenterX(getCenterX() +  getVelocityX());
         setCenterY(getCenterY() +  getVelocityY());
@@ -215,12 +176,10 @@ public class Particle extends Circle{
     }
 
     public double getDiffXFromParticle(Particle b){
-//        return Math.abs(this.getCenterX()-b.getCenterX()); // valeur absolue deplacement x
         return this.getCenterX()-b.getCenterX(); //
     }
 
     public double getDiffYFromParticle(Particle b){
-//        return Math.abs(this.getCenterY()-b.getCenterY()); // valeur absolue deplacement y
         return this.getCenterY()-b.getCenterY(); //
     }
 
@@ -229,7 +188,7 @@ public class Particle extends Circle{
     }
 
     public double getForce(Particle b){
-        return (0.000002 * this.getMass() * b.getMass()) / (Math.pow(this.getDistanceFromParticle(b), 2));
+        return (0.0002 * this.getMass() * b.getMass()) / (Math.pow(this.getDistanceFromParticle(b), 2));
     }
 
     public double getAccelerationX(){

@@ -53,10 +53,10 @@ public class HelloApplication extends Application {
 
 
         List<Particle> particles = new ArrayList<>();
-        for (int i = 0; i < 30; i++) {
+        for (int i = 0; i < 10; i++) {
 
-//            double radius = randomBetween(3, 6);
-            double radius = 1;
+            double radius = randomBetween(3, 6);
+
 
             Particle particle = new Particle(
                     randomBetween(10, 1190 ),
@@ -64,7 +64,7 @@ public class HelloApplication extends Application {
                     scene.getWidth(),
                     scene.getHeight(),
                     radius,
-                    radius*50,
+                    radius*10000,
                     Utils.randomFromList(colors));
             particles.add(particle);
 
