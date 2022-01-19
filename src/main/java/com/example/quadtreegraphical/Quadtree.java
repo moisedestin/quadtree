@@ -135,9 +135,6 @@ public class Quadtree {
                 this.quadtreene.insert(point);
             }
         }
-        else if(!divided){
-            System.out.println("here");
-        }
 
 
 
@@ -183,9 +180,10 @@ public class Quadtree {
             circle.setCenterX(pointParticle.getX());
             circle.setCenterY(pointParticle.getY());
             circle.setStrokeWidth(100);
-            circle.setFill(Color.BLACK);
+            circle.setFill(pointParticle.getParticle().getFill());
             circle.setRadius(2);
-            root.getChildren().add(circle);
+//            root.getChildren().add(circle);
+//            root.getChildren().add(pointParticle.getParticle());
 
         }
 
@@ -203,7 +201,7 @@ public class Quadtree {
         if(!pointParticleParam.equals(pointParticle)){
             if (!divided) {
 
-//                if(pointParticle != null)
+                if(pointParticle != null)
                     pointParticleParam.getParticle().addForce(pointParticle.getParticle());
             }
             else {

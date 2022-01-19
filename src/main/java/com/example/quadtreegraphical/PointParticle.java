@@ -9,9 +9,6 @@ public class PointParticle extends Point2D {
 
     private Particle particle;
 
-    public PointParticle(double v, double v1) {
-        super(v, v1);
-    }
     public PointParticle(double v, double v1, Particle particle) {
         super(v, v1);
         this.particle = particle;

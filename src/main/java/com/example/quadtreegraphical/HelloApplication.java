@@ -53,13 +53,14 @@ public class HelloApplication extends Application {
 
 
         List<Particle> particles = new ArrayList<>();
-        for (int i = 0; i < 10; i++) {
+        for (int i = 0; i < 25000; i++) {
 
-            double radius = randomBetween(3, 6);
+//            double radius = randomBetween(3, 6);
+            double radius = 2;
 
             Particle particle = new Particle(
-                    randomBetween(50, 350 ),
-                    randomBetween(50, 350),
+                    randomBetween(50, 1100 ),
+                    randomBetween(50, 750),
                     scene.getWidth(),
                     scene.getHeight(),
                     radius,
@@ -70,26 +71,6 @@ public class HelloApplication extends Application {
             root.getChildren().add(particle);
          }
 
-
-//        Particle particle1 = new Particle(
-//                10,
-//                390,
-//                scene.getWidth(),
-//                scene.getHeight(),
-//                10,
-//                10*50,
-//                Utils.randomFromList(colors));
-//        particles.add(particle1);
-
-//        root.getChildren().add(particle1);
-
-        Quadtree quadtree = new Quadtree(new Rectangle2D(0,0,1200,800), 1);
-
-        for (Particle particle : particles) {
-            quadtree.insert(new PointParticle(particle.getCenterX(), particle.getCenterY(), particle));
-        }
-
-        quadtree.show(root);
 
         new AnimationTimer() {
 
@@ -106,22 +87,24 @@ public class HelloApplication extends Application {
                     long elapsedNanos = now - oldFrameTime ;
                     long elapsedNanosPerFrame = elapsedNanos / frameTimes.length ;
                     double frameRate = 1_000_000_000.0 / elapsedNanosPerFrame ;
-//                    System.out.println(String.format("Current frame rate: %.3f", frameRate));
+                    System.out.println(String.format("Current frame rate: %.3f", frameRate));
                 }
 
-//                Quadtree quadtree = new Quadtree(new Rectangle2D(0,0,1200,800), 1);
-//
-//                for (Particle particle : particles) {
-//                    quadtree.insert(new PointParticle(particle.getCenterX(), particle.getCenterY(), particle));
-//                }
-//
+                Quadtree quadtree = new Quadtree(new Rectangle2D(0,0,1200,800), 1);
+
+                for (Particle particle : particles) {
+                    quadtree.insert(new PointParticle(particle.getCenterX(), particle.getCenterY(), particle));
+                }
+
+                for (Particle particle : particles) {
+                    quadtree.updateForce(new PointParticle(particle.getCenterX(), particle.getCenterY(), particle));
+
+                    //set new position
+                    particle.update();
+                }
+
 //                quadtree.show(root);
-//                for (Particle particle : particles) {
-//                    quadtree.updateForce(new PointParticle(particle.getCenterX(), particle.getCenterY(), particle));
-//
-//                    //set new position
-//                    particle.update();
-//                }
+
             }
             }.start();
 
