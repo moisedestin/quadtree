@@ -56,7 +56,7 @@ public class HelloApplication extends Application {
         for (int i = 0; i < 25000; i++) {
 
 //            double radius = randomBetween(3, 6);
-            double radius = 2;
+            double radius = 1;
 
             Particle particle = new Particle(
                     randomBetween(50, 1100 ),
@@ -94,6 +94,7 @@ public class HelloApplication extends Application {
 
                 for (Particle particle : particles) {
                     quadtree.insert(new PointParticle(particle.getCenterX(), particle.getCenterY(), particle));
+
                 }
 
                 for (Particle particle : particles) {

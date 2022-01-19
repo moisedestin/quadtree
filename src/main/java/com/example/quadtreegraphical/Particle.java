@@ -190,14 +190,12 @@ public class Particle extends Circle{
     public void update() {
 
         setVelocity(
-                getVelocityX() + (  fx / mass),
-                getVelocityY() + (  fy / mass)
+                getVelocityX() + ( this.getAccelerationX()),
+                getVelocityY() + (  this.getAccelerationY())
                 );
 
         setCenterX(getCenterX() +  getVelocityX());
         setCenterY(getCenterY() +  getVelocityY());
-//        setTranslateX(getTranslateX() +  getVelocityX());
-//        setTranslateY(getTranslateY() +  getVelocityY());
 
     }
 
@@ -217,6 +215,13 @@ public class Particle extends Circle{
 
     public double getForce(Particle b){
         return (0.000002 * this.getMass() * b.getMass()) / (Math.pow(this.getDistanceFromParticle(b), 2));
+    }
+
+    public double getAccelerationX(){
+        return this.fx / this.mass;
+    }
+    public double getAccelerationY(){
+        return this.fy / this.mass;
     }
 
 }
