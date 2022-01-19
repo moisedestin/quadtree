@@ -53,14 +53,14 @@ public class HelloApplication extends Application {
 
 
         List<Particle> particles = new ArrayList<>();
-        for (int i = 0; i < 25000; i++) {
+        for (int i = 0; i < 30; i++) {
 
 //            double radius = randomBetween(3, 6);
             double radius = 1;
 
             Particle particle = new Particle(
-                    randomBetween(50, 1100 ),
-                    randomBetween(50, 750),
+                    randomBetween(10, 1190 ),
+                    randomBetween(10, 790),
                     scene.getWidth(),
                     scene.getHeight(),
                     radius,
@@ -87,7 +87,7 @@ public class HelloApplication extends Application {
                     long elapsedNanos = now - oldFrameTime ;
                     long elapsedNanosPerFrame = elapsedNanos / frameTimes.length ;
                     double frameRate = 1_000_000_000.0 / elapsedNanosPerFrame ;
-                    System.out.println(String.format("Current frame rate: %.3f", frameRate));
+//                    System.out.println(String.format("Current frame rate: %.3f", frameRate));
                 }
 
                 Quadtree quadtree = new Quadtree(new Rectangle2D(0,0,1200,800), 1);

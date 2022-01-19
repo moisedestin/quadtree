@@ -28,18 +28,13 @@ public class Quadtree {
         this.boundary = boundary;
         this.capacity = n;
         this.pointParticle =null;
-        this.center_of_mass =new Point2D(0,0);
+        this.center_of_mass =null;
     }
 
     double getTotalMass() {
 
-       return mass;
-    }
-
-    double updateMass() {
-
-//        if (mass != 0)
-//            return mass;
+        if (mass != 0)
+            return mass;
 
         if (!divided)
             return pointParticle.getParticle().getMass();
@@ -56,17 +51,12 @@ public class Quadtree {
 
     public Point2D getCenterOfMass() {
 
-        return center_of_mass;
-    }
+        if (center_of_mass != null)
+            return center_of_mass;
 
-    public Point2D updateCenterOfMass() {
-
-//        if (center_of_mass != null)
-//            return center_of_mass;
-
-//        if (!divided) {
-//            return new Point2D(pointParticle.getParticle().getCenterX(), pointParticle.getParticle().getCenterY());
-//        }
+        if (!divided) {
+            return new Point2D(pointParticle.getParticle().getCenterX(), pointParticle.getParticle().getCenterY());
+        }
 
         Point2D nwCenter, neCenter, swCenter, seCenter;
         double nwMass, neMass, swMass, seMass;
@@ -114,8 +104,8 @@ public class Quadtree {
         x /= totalMass;
         y /= totalMass;
 
-//        center_of_mass = ;
-        return new Point2D(x, y);
+        center_of_mass = new Point2D(x, y);
+        return center_of_mass;
     }
 
     public void insert(PointParticle point) {
@@ -124,9 +114,6 @@ public class Quadtree {
         if (  this.boundary.contains(point)){
             if (this.pointParticle == null ) {
                 this.pointParticle = point;
-                this.center_of_mass = new Point2D(pointParticle.getParticle().getCenterX(), pointParticle.getParticle().getCenterY());
-                this.mass = this.pointParticle.getParticle().getMass();
-
             } else {
 
                 if (!divided) {
@@ -146,11 +133,7 @@ public class Quadtree {
                 this.quadtreenw.insert(point);
                 this.quadtreesw.insert(point);
                 this.quadtreene.insert(point);
-
-                this.mass = updateMass();
-                this.center_of_mass = updateCenterOfMass();
             }
-
         }
 
 
@@ -191,15 +174,14 @@ public class Quadtree {
         rectangle.setFill(Color.TRANSPARENT);
         root.getChildren().add(rectangle);
         if(pointParticle != null){
-            if(!rectangle.contains(pointParticle))
-                System.out.println(true);
+
             Circle circle = new Circle();
             circle.setCenterX(pointParticle.getX());
             circle.setCenterY(pointParticle.getY());
             circle.setStrokeWidth(100);
             circle.setFill(pointParticle.getParticle().getFill());
             circle.setRadius(2);
-//            root.getChildren().add(circle);
+            root.getChildren().add(circle);
 //            root.getChildren().add(pointParticle.getParticle());
 
         }

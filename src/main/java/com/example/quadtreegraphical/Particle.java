@@ -189,10 +189,25 @@ public class Particle extends Circle{
 
     public void update() {
 
+
+
         setVelocity(
                 getVelocityX() + ( this.getAccelerationX()),
                 getVelocityY() + (  this.getAccelerationY())
                 );
+
+//        double accelerationX = this.getVelocityX();
+//        double accelerationY = this.getVelocityY();
+
+//        if(getCenterX() >= this.container_width)
+//            accelerationX = -Math.abs(accelerationX);
+//        else{
+//            accelerationX = Math.abs(accelerationX);
+//        }
+//        if(getCenterY() >= this.container_height)
+//            accelerationY = -Math.abs(accelerationY);
+//        else
+//            accelerationY = Math.abs(accelerationY);
 
         setCenterX(getCenterX() +  getVelocityX());
         setCenterY(getCenterY() +  getVelocityY());
@@ -200,13 +215,13 @@ public class Particle extends Circle{
     }
 
     public double getDiffXFromParticle(Particle b){
-//        return Math.abs(this.getTranslateX()-b.getTranslateX()); // valeur absolue deplacement x
-        return this.getCenterX()-b.getCenterX(); // valeur absolue deplacement x
+//        return Math.abs(this.getCenterX()-b.getCenterX()); // valeur absolue deplacement x
+        return this.getCenterX()-b.getCenterX(); //
     }
 
     public double getDiffYFromParticle(Particle b){
-//        return Math.abs(this.getTranslateY()-b.getTranslateY()); // valeur absolue deplacement y
-        return this.getCenterY()-b.getCenterY(); // valeur absolue deplacement y
+//        return Math.abs(this.getCenterY()-b.getCenterY()); // valeur absolue deplacement y
+        return this.getCenterY()-b.getCenterY(); //
     }
 
     public double getDistanceFromParticle(Particle b){
