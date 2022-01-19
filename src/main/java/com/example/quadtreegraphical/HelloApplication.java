@@ -91,18 +91,20 @@ public class HelloApplication extends Application {
 
                 for(Particle a : particles) {
                     for(Particle b : particles) {
-                        if(a.equals(b)) {
-                            continue;
+                        if(!a.equals(b)) {
+                            a.setVelocity(
+                                    a.getVelocityX()+(a.getDiffXFromParticle(b)*a.getForce(b)),
+                                    a.getVelocityY()+(a.getDiffYFromParticle(b)*a.getForce(b)));
                         }
-                        double[] delta = getG(a, b);
 
-                        if(a.getTranslateX()>b.getTranslateX())
-                            delta[0] *= -1;
+//                        if(a.getTranslateX()>b.getTranslateX())
+//                            delta[0] *= -1;
+//
+//                        if(a.getTranslateY()>b.getTranslateY())
+//                            delta[1] *= -1;
 
-                        if(a.getTranslateY()>b.getTranslateY())
-                            delta[1] *= -1;
+//                        a.setVelocity(a.getVelocityX()+delta[0], a.getVelocityY()+delta[1]);
 
-                        a.setVelocity(a.getVelocityX()+delta[0], a.getVelocityY()+delta[1]);
                     }
                 }
 

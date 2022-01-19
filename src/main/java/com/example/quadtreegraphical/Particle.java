@@ -47,83 +47,6 @@ public class Particle extends Circle{
         this.setVelocityY(y);
     }
 
-    public void move(){
-
-        double x = this.getCenterX();
-        double y = this.getCenterY();
-        double r =this.getRadius();
-
-        // On impact with vertical boundary, reflect horizontally.
-        if (x <= r || x >= container_width - r) {
-            dx = -dx;
-        }
-
-        // On impact with horizontal boundary, reflect vertically.
-        if (y <= r || y >= container_height - r) {
-            dy = -dy;
-        }
-
-
-        double newX = this.getCenterX()  ;
-        double newY = this.getCenterY()  ;
-
-        ThreadLocalRandom rand = ThreadLocalRandom.current();
-
-        if(rand.nextBoolean()){
-            if(rand.nextBoolean()){
-                // right down
-                newX += 1;
-                newY += 1;
-
-            }
-            else{
-                // left up
-                newX -= 1;
-                newY -= 1;
-            }
-        }
-        else{
-            if(rand.nextBoolean()){
-                // left down
-                newX -= 1;
-                newY += 1;
-            }
-            else{
-                // right up
-                newX += 1;
-                newY -= 1;
-            }
-        }
-
-
-        // eviter qu'il depasse les bordures
-        if(newX == this.container_width - 5){
-            newX += 1;
-        }
-        if(newX == this.container_height - 5){
-            newY += 1;
-        }
-        if(newX == this.container_width - 5){
-            newX -= 1;
-        }
-        if(newY == this.container_height - 5){
-            newY -= 1;
-        }
-
-        this.setCenterX(newX); ;
-        this.setCenterY(newY);
-
-//        if(this.hightlight){
-//            this.setFill(Color.RED);
-//        }
-//        else{
-//            this.setFill(Color.AQUA);
-//        }
-
-
-
-    }
-
     public double getVelocityX() {
         return velocity_x;
     }
@@ -147,6 +70,23 @@ public class Particle extends Circle{
         this.mass = mass;
     }
 
+    public double getDiffXFromParticle(Particle b){
+//        return Math.abs(this.getTranslateX()-b.getTranslateX()); // valeur absolue deplacement x
+        return this.getTranslateX()-b.getTranslateX(); // valeur absolue deplacement x
+    }
+
+    public double getDiffYFromParticle(Particle b){
+//        return Math.abs(this.getTranslateY()-b.getTranslateY()); // valeur absolue deplacement y
+        return this.getTranslateY()-b.getTranslateY(); // valeur absolue deplacement y
+    }
+
+    public double getDistanceFromParticle(Particle b){
+        return Math.sqrt(Math.pow(this.getDiffXFromParticle(b), 2)+Math.pow(this.getDiffYFromParticle(b), 2));
+    }
+
+    public double getForce(Particle b){
+        return (0.000002 * this.getMass() * b.getMass()) / (Math.pow(this.getDistanceFromParticle(b), 2));
+    }
 
 
 }
