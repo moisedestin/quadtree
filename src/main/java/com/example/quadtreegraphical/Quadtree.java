@@ -135,6 +135,9 @@ public class Quadtree {
                 this.quadtreene.insert(point);
             }
         }
+        else if(!divided){
+            System.out.println("here");
+        }
 
 
 
@@ -163,58 +166,10 @@ public class Quadtree {
 
     }
 //
-//    public List<PointParticle> query(Rectangle2D queryRectangle2D){
-//        List<PointParticle> results = new ArrayList<PointParticle>();
-//        if(!this.boundary.intersects(queryRectangle2D)){
-//        }
-//        else{
-//            for (PointParticle point2D : points) {
-//                if(queryRectangle2D.contains(point2D)){
-//                    results.add(point2D);
-//                }
-//            }
-//
-//            if(this.divided){
-//                results.addAll(this.quadtreenw.query(queryRectangle2D));
-//                results.addAll(this.quadtreene.query(queryRectangle2D));
-//                results.addAll(this.quadtreesw.query(queryRectangle2D));
-//                results.addAll(this.quadtreese.query(queryRectangle2D));
-//            }
-//        }
-//        return results;
-//    }
 
-    public boolean intersects(Circle circle){
-//            def intersect(Circle(P, R), Rectangle(A, B, C, D)):
-//            S = Circle(P, R)
-//            return (this.boundary.contains(circle.getCenterX(), circle.getCenterY()) or
-//            intersectCircle(S, (A, B)) or
-//            intersectCircle(S, (B, C)) or
-//            intersectCircle(S, (C, D)) or
-//            intersectCircle(S, (D, A)))
-        return this.boundary.contains(circle.getCenterX(), circle.getCenterY());
-    }
 
-//    public List<PointParticle> query(Circle circle){
-//        List<PointParticle> results = new ArrayList<PointParticle>();
-//        if(!this.intersects(circle)){
-//        }
-//        else{
-//            for (PointParticle point2D : points) {
-//                if(circle.contains(point2D)){
-//                    results.add(point2D);
-//                }
-//            }
-//
-//            if(this.divided){
-//                results.addAll(this.quadtreenw.query(circle));
-//                results.addAll(this.quadtreene.query(circle));
-//                results.addAll(this.quadtreesw.query(circle));
-//                results.addAll(this.quadtreese.query(circle));
-//            }
-//        }
-//        return results;
-//    }
+
+
 
     public void show(AnchorPane root) {
         Rectangle rectangle = new Rectangle(this.boundary.getMinX(), this.boundary.getMinY(), this.boundary.getWidth(), this.boundary.getHeight());
@@ -222,6 +177,8 @@ public class Quadtree {
         rectangle.setFill(Color.TRANSPARENT);
         root.getChildren().add(rectangle);
         if(pointParticle != null){
+            if(!rectangle.contains(pointParticle))
+                System.out.println(true);
             Circle circle = new Circle();
             circle.setCenterX(pointParticle.getX());
             circle.setCenterY(pointParticle.getY());
@@ -243,27 +200,30 @@ public class Quadtree {
 
     public void updateForce(PointParticle pointParticleParam) {
 
-        if (!divided && !pointParticleParam.equals(pointParticle)) {
+        if(!pointParticleParam.equals(pointParticle)){
+            if (!divided) {
 
-            if(pointParticle != null)
-            pointParticleParam.getParticle().addForce(pointParticle.getParticle());
-        }
-        else {
-
-            double distanceFromCenterOfMass = pointParticleParam.distance(getCenterOfMass());
-            double t = this.boundary.getHeight() / distanceFromCenterOfMass; // length
-
-            if (t < .5) {
-                pointParticleParam.getParticle().addForce(getCenterOfMass(), getTotalMass());
+//                if(pointParticle != null)
+                    pointParticleParam.getParticle().addForce(pointParticle.getParticle());
             }
             else {
 
-                if (this.quadtreenw != null) this.quadtreenw.updateForce(pointParticleParam);
-                if (this.quadtreesw != null) this.quadtreesw.updateForce(pointParticleParam);
-                if (this.quadtreese != null) this.quadtreese.updateForce(pointParticleParam);
-                if (this.quadtreene != null) this.quadtreene.updateForce(pointParticleParam);
+                double distanceFromCenterOfMass = pointParticleParam.distance(getCenterOfMass());
+                double t = this.boundary.getHeight() / distanceFromCenterOfMass; // length
+
+                if (t < .5) {
+                    pointParticleParam.getParticle().addForce(getCenterOfMass(), getTotalMass());
+                }
+                else {
+
+                    if (this.quadtreenw != null) this.quadtreenw.updateForce(pointParticleParam);
+                    if (this.quadtreesw != null) this.quadtreesw.updateForce(pointParticleParam);
+                    if (this.quadtreese != null) this.quadtreese.updateForce(pointParticleParam);
+                    if (this.quadtreene != null) this.quadtreene.updateForce(pointParticleParam);
+                }
             }
         }
+
     }
 
 }

@@ -53,13 +53,13 @@ public class HelloApplication extends Application {
 
 
         List<Particle> particles = new ArrayList<>();
-        for (int i = 0; i < 5000; i++) {
+        for (int i = 0; i < 10; i++) {
 
             double radius = randomBetween(3, 6);
 
             Particle particle = new Particle(
-                    randomBetween(100, 600 ),
-                    randomBetween(100, 600),
+                    randomBetween(50, 350 ),
+                    randomBetween(50, 350),
                     scene.getWidth(),
                     scene.getHeight(),
                     radius,
@@ -69,6 +69,27 @@ public class HelloApplication extends Application {
 
             root.getChildren().add(particle);
          }
+
+
+//        Particle particle1 = new Particle(
+//                10,
+//                390,
+//                scene.getWidth(),
+//                scene.getHeight(),
+//                10,
+//                10*50,
+//                Utils.randomFromList(colors));
+//        particles.add(particle1);
+
+//        root.getChildren().add(particle1);
+
+        Quadtree quadtree = new Quadtree(new Rectangle2D(0,0,1200,800), 1);
+
+        for (Particle particle : particles) {
+            quadtree.insert(new PointParticle(particle.getCenterX(), particle.getCenterY(), particle));
+        }
+
+        quadtree.show(root);
 
         new AnimationTimer() {
 
@@ -85,44 +106,22 @@ public class HelloApplication extends Application {
                     long elapsedNanos = now - oldFrameTime ;
                     long elapsedNanosPerFrame = elapsedNanos / frameTimes.length ;
                     double frameRate = 1_000_000_000.0 / elapsedNanosPerFrame ;
-                    System.out.println(String.format("Current frame rate: %.3f", frameRate));
+//                    System.out.println(String.format("Current frame rate: %.3f", frameRate));
                 }
 
-                Quadtree quadtree = new Quadtree(new Rectangle2D(0,0,1200,800), 1);
-
-                for (Particle particle : particles) {
-                    quadtree.insert(new PointParticle(particle.getCenterX(), particle.getCenterY(), particle));
-                }
-
-                for (Particle particle : particles) {
-                    quadtree.updateForce(new PointParticle(particle.getCenterX(), particle.getCenterY(), particle));
-
-                    //set new position
-                    particle.update();
-                }
-//                CalcDeltas(particles);
-//                for(Particle b : particles) {
-//                    b.setTranslateX(b.getTranslateX()+b.getVelocityX());
-//                    b.setTranslateY(b.getTranslateY() + b.getVelocityY());
+//                Quadtree quadtree = new Quadtree(new Rectangle2D(0,0,1200,800), 1);
 //
+//                for (Particle particle : particles) {
+//                    quadtree.insert(new PointParticle(particle.getCenterX(), particle.getCenterY(), particle));
 //                }
-
-//                for (Particle particle :
-//                        particles) {
-//                    particle.move();
-//                    particle.setHightlight(false);
 //
+//                quadtree.show(root);
+//                for (Particle particle : particles) {
+//                    quadtree.updateForce(new PointParticle(particle.getCenterX(), particle.getCenterY(), particle));
+//
+//                    //set new position
+//                    particle.update();
 //                }
-
-//                for (Particle particle :
-//                        particles) {
-//                    for(Particle other : particles){
-//                        if(!other.equals(particle) && particle.intersects(other.getBoundsInParent())){
-//                            particle.setHightlight(true);
-//                        }
-//                    }
-//                }
-
             }
             }.start();
 
@@ -137,32 +136,6 @@ public class HelloApplication extends Application {
         launch();
     }
 
-    public static void CalcDeltas(List<Particle> bodies) {
-        for(Particle a : bodies) {
-            for(Particle b : bodies) {
-                if(a.equals(b)) {
-                    continue;
-                }
-                double[] delta = getG(a, b);
 
-                if(a.getTranslateX()>b.getTranslateX())
-                    delta[0] *= -1;
-
-                if(a.getTranslateY()>b.getTranslateY())
-                    delta[1] *= -1;
-
-                a.setVelocity(a.getVelocityX()+delta[0], a.getVelocityY()+delta[1]);
-            }
-        }
-    }
-
-    public static double[] getG(Particle a, Particle b) {
-        double diffX = Math.abs(a.getTranslateX()-b.getTranslateX()); // valeur absolue deplacement x
-        double diffY = Math.abs(a.getTranslateY()-b.getTranslateY()); // valeur absolue deplacement x y
-        double distance = Math.sqrt(Math.pow(diffX, 2)+Math.pow(diffY, 2)); //distance
-        double f = (0.000002 * a.getMass() * b.getMass()) / (Math.pow(distance, 2)); // force masse/distance
-        return new double[] {diffX*f, diffY*f};
-
-    }
 
 }
